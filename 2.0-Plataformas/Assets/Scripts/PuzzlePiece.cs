@@ -1,24 +1,46 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PuzzlePiece : MonoBehaviour {
-    public int correctIndex;
-    public int currentIndex;
+public class PuzzlePiece : MonoBehaviour
+{
+    public int correctIndex; // posição correta
+    public int currentIndex; // posição atual
+    public Button button;
 
-    public void OnClick() {
-        FindObjectOfType<PuzzleManager>().SelectPiece(this);
+    private PuzzleManager manager;
+
+    public void Initialize(int index, PuzzleManager puzzleManager)
+    {
+        correctIndex = index;
+        currentIndex = index;
+        manager = puzzleManager;
+        button = GetComponent<Button>();
+        button.onClick.AddListener(OnPieceClicked);
     }
 
-    public void Swap(PuzzlePiece other) {
-        int tempIndex = this.currentIndex;
-        this.currentIndex = other.currentIndex;
-        other.currentIndex = tempIndex;
-
-        Vector3 tempPos = this.transform.localPosition;
-        this.transform.localPosition = other.transform.localPosition;
-        other.transform.localPosition = tempPos;
+    void OnPieceClicked()
+    {
+        manager.OnPieceSelected(this);
     }
 
-    public bool IsCorrect() {
-        return currentIndex == correctIndex;
+    public void SwapWith(PuzzlePiece other)
+    {
+        // Trocar as posições no layout
+        Transform tempParent = this.transform.parent;
+        int thisIndex = this.transform.GetSiblingIndex();
+        int otherIndex = other.transform.GetSiblingIndex();
+
+        this.transform.SetSiblingIndex(otherIndex);
+        other.transform.SetSiblingIndex(thisIndex);
+
+        // Trocar os índices
+        int temp = currentIndex;
+        currentIndex = other.currentIndex;
+        other.currentIndex = temp;
+    }
+
+    public bool IsCorrect()
+    {
+        return correctIndex == currentIndex;
     }
 }
