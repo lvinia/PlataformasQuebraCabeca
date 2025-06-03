@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class PuzzleManager : MonoBehaviour
 {
-    public Transform puzzlePanel;
-    public Button undoButton;
-    public Button replayButton;
-    public Button skipReplayButton;
-    public GameObject victoryPanel;
+    public Transform puzzlePanel; // Painel com as peças (GridLayoutGroup)
+    public Button undoButton;     // Botão "Desfazer"
+    public Button replayButton;   // Botão "Ver Replay"
+    public Button skipReplayButton; // Botão "Pular Replay"
+    public GameObject victoryPanel; // Painel de vitória
 
     private PuzzlePiece selectedPiece;
     private Stack<ICommand> history = new Stack<ICommand>();
@@ -22,9 +22,11 @@ public class PuzzleManager : MonoBehaviour
         InitializePieces();
         ShufflePieces();
         victoryPanel.SetActive(false);
+        skipReplayButton.gameObject.SetActive(false);
+
         undoButton.onClick.AddListener(UndoMove);
         replayButton.onClick.AddListener(StartReplay);
-        skipReplayButton.gameObject.SetActive(false);
+        skipReplayButton.onClick.AddListener(SkipReplay);
     }
 
     void InitializePieces()
@@ -44,14 +46,14 @@ public class PuzzleManager : MonoBehaviour
             puzzlePanel.GetChild(i).SetSiblingIndex(rand);
         }
 
-        // Atualiza os índices após o embaralhamento
+        // Atualiza os índices atuais
         for (int i = 0; i < puzzlePanel.childCount; i++)
         {
             PuzzlePiece piece = puzzlePanel.GetChild(i).GetComponent<PuzzlePiece>();
             piece.currentIndex = i;
         }
 
-        // Salva a ordem embaralhada
+        // Salva ordem inicial para replay
         initialOrder.Clear();
         for (int i = 0; i < puzzlePanel.childCount; i++)
         {
@@ -84,8 +86,7 @@ public class PuzzleManager : MonoBehaviour
 
     public void UndoMove()
     {
-        if (isReplaying || selectedPiece != null || history.Count == 0)
-            return;
+        if (isReplaying || selectedPiece != null || history.Count == 0) return;
 
         ICommand lastCommand = history.Pop();
         lastCommand.Undo();
@@ -110,8 +111,8 @@ public class PuzzleManager : MonoBehaviour
     {
         if (isReplaying) return;
 
-        victoryPanel.SetActive(false);
         skipReplayButton.gameObject.SetActive(true);
+        victoryPanel.SetActive(false);
         StartCoroutine(ReplayRoutine());
     }
 
@@ -134,8 +135,6 @@ public class PuzzleManager : MonoBehaviour
 
     public void SkipReplay()
     {
-        if (!isReplaying) return;
-
         StopAllCoroutines();
         ResetPuzzle();
 

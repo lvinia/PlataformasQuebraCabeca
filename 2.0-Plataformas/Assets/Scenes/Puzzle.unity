@@ -1288,7 +1288,7 @@ GameObject:
   - component: {fileID: 609086635}
   - component: {fileID: 609086634}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: PularReplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2791,7 +2791,7 @@ MonoBehaviour:
   puzzlePanel: {fileID: 2059523755}
   undoButton: {fileID: 2068794271}
   replayButton: {fileID: 600294257}
-  skipReplayButton: {fileID: 0}
+  skipReplayButton: {fileID: 1536676286}
   victoryPanel: {fileID: 911417599}
 --- !u!4 &1414837331
 Transform:
@@ -2821,7 +2821,7 @@ GameObject:
   - component: {fileID: 1536676287}
   - component: {fileID: 1536676286}
   m_Layer: 5
-  m_Name: PularReplay
+  m_Name: SkipReplayButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2890,19 +2890,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1536676287}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1414837330}
-        m_TargetAssemblyTypeName: PuzzleManager, Assembly-CSharp
-        m_MethodName: SkipReplay
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1536676287
 MonoBehaviour:
   m_ObjectHideFlags: 0
