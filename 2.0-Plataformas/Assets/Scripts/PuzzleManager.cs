@@ -86,10 +86,17 @@ public class PuzzleManager : MonoBehaviour
 
     public void UndoMove()
     {
-        if (isReplaying || selectedPiece != null || history.Count == 0) return;
-
+        if (isReplaying || selectedPiece != null || history.Count == 0)
+            return;
+    
         ICommand lastCommand = history.Pop();
         lastCommand.Undo();
+    
+        // Remove o último comando da lista de replay também
+        if (replayCommands.Count > 0)
+        {
+            replayCommands.RemoveAt(replayCommands.Count - 1);
+        }
     }
 
     void CheckVictory()
